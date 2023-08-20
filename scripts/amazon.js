@@ -28,7 +28,7 @@ products.forEach((product) => {
       </div>
 
       <div class="product-quantity-container">
-        <select>
+        <select id="js-select-value-${product.id}">
           <option selected value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -58,8 +58,9 @@ products.forEach((product) => {
 });
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
-document.querySelector(".js-cart-quantity").innerHTML = cart.length;
-function updateCartQuantity() {
+
+//Updates the total quantity of cart
+function updateTotalCartQuantity() {
   let cartQuantity = 0;
 
   cart.forEach((cartItem) => {
@@ -68,10 +69,15 @@ function updateCartQuantity() {
 
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
+updateTotalCartQuantity();
+//Add click event to each add-to-cart button that updates the carts local storage and quantity
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
-    addToCart(productId);
-    updateCartQuantity();
+    const quantityOfItem = document.getElementById(
+      `js-select-value-${productId}`
+    ).value;
+    addToCart(productId, quantityOfItem);
+    updateTotalCartQuantity();
   });
 });

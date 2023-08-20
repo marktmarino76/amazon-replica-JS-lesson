@@ -8,7 +8,8 @@ function saveToStorage() {
   //Note: local storage can only save strings
   localStorage.setItem("cart", JSON.stringify(cart));
 }
-export function addToCart(productId) {
+
+export function addToCart(productId, quantityNum) {
   let matchingItem;
 
   cart.forEach((cartItem) => {
@@ -18,13 +19,16 @@ export function addToCart(productId) {
   });
 
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    let totalQuantity =
+      parseInt(matchingItem.quantity, 10) + parseInt(quantityNum, 10);
+    matchingItem.quantity = totalQuantity.toString();
   } else {
     cart.push({
       productId: productId,
-      quantity: 1,
+      quantity: quantityNum,
     });
   }
+
   saveToStorage();
 }
 
